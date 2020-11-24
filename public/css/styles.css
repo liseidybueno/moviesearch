@@ -113,12 +113,6 @@ a:hover {
   margin-right: 20px;
 }
 
-.thumbs {
-  /* margin-left: 1rem;
-  margin-right: 1rem; */
-  /* margin-bottom: 0; */
-}
-
 .thumbs-button {
   background: none;
   color: inherit;
@@ -127,6 +121,10 @@ a:hover {
   cursor: pointer;
   outline: inherit;
   font-size: 1.5rem;
+}
+
+#thumbsUp:hover, #thumbsDown:hover {
+  color: #af6b58;
 }
 
 .footer {

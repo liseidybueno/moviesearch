@@ -27,7 +27,7 @@
           <input type="hidden" name="movieTitleup" value="<%= title %>"></input>
           <input type="hidden" name="thumbsup" value="<%= thumbs_up %>"></input>
 
-          <button class="thumbs-button" type="submit" name="thumbs-up" id="thumbsUp" onclick="this.form.submit()"><i class="thumbs fas fa-thumbs-up fa-2x"></i></button>
+          <button class="thumbs-button" type="submit" name="thumbs-up" id="thumbsUp" onclick="this.form.submit()"><i class="thumbs fas fa-thumbs-up fa-2x" id="thumbs-up-img"></i></button>
 
           <p id="thumbs-up-amount">
             <%= thumbs_up %>
@@ -43,7 +43,7 @@
           <input type="hidden" name="thumbsdown" value="<%= thumbs_down %>"></input>
 
 
-          <button class="thumbs-button" type="submit" name="thumbs-down" id="thumbsDown" onclick="this.form.submit()"><i class="thumbs fas fa-thumbs-down fa-2x"></i></button>
+          <button class="thumbs-button" type="submit" name="thumbs-down" id="thumbsDown" onclick="this.form.submit()"><i class="thumbs fas fa-thumbs-down fa-2x" id="thumbs-down-img"></i></button>
           <p>
             <%= thumbs_down %>
           </p>
@@ -60,5 +60,25 @@
   </div>
 
 </div>
+
+<script>
+
+
+  var thumbsUpAmt = <%= thumbs_up %>;
+  var thumbsDownAmt = <%= thumbs_down %>;
+
+  var thumbsUp = document.getElementById("thumbs-up-img");
+  var thumbsDown = document.getElementById("thumbs-down-img");
+
+  if(thumbsUpAmt > thumbsDownAmt){
+    thumbsUp.style.color = "green";
+  } else if (thumbsUpAmt < thumbsDownAmt){
+    thumbsDown.style.color = "red";
+  }
+
+
+
+
+</script>
 
 <%- include("partials/footer"); -%>
