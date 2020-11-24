@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const _ = require("lodash");
 const mongoose = require("mongoose");
+require('dotenv').config()
 
 const app = express();
 
@@ -31,12 +32,12 @@ app.post("/found", function(req, res) {
   //api to get IMDB ID's
   const options = {
     "method": "GET",
-    "hostname": "movies-tvshows-data-imdb.p.rapidapi.com",
+    "hostname": process.env.API_HOSTNAME,
     "port": null,
     "path": "/?title=" + movieTitleURL + "&type=get-movies-by-title",
     "headers": {
-      "x-rapidapi-key": "47bc00c936msh21813d19de3c7e0p12c834jsn644689ad087b",
-      "x-rapidapi-host": "movies-tvshows-data-imdb.p.rapidapi.com",
+      "x-rapidapi-key": process.env.API_KEY,
+      "x-rapidapi-host": process.env.API_HOSTNAME,
       "useQueryString": true
     }
   };
@@ -78,7 +79,6 @@ app.post("/found", function(req, res) {
       //render found page with the found movie data
       res.render("found", {
         movieIDs: movieIDs
-
       });
 
 
@@ -106,12 +106,12 @@ app.get("/found/:movieID", function(req, res) {
   //search through API using movie ID
   const options = {
     "method": "GET",
-    "hostname": "movies-tvshows-data-imdb.p.rapidapi.com",
+    "hostname": process.env.API_HOSTNAME,
     "port": null,
     "path": "/?imdb=" + movieID + "&type=get-movie-details",
     "headers": {
-      "x-rapidapi-key": "47bc00c936msh21813d19de3c7e0p12c834jsn644689ad087b",
-      "x-rapidapi-host": "movies-tvshows-data-imdb.p.rapidapi.com",
+      "x-rapidapi-key": process.env.API_KEY,
+      "x-rapidapi-host": process.env.API_HOSTNAME,
       "useQueryString": true
     }
   };
@@ -144,9 +144,7 @@ app.get("/found/:movieID", function(req, res) {
       const imdb_id = movieDataArr.imdb_id;
 
       //look for the imdb id in the database
-      //if it exists get the thumbs down and thumbs up amount and display
-
-
+      //if it exists get the thumbs down and thumbs up amount and display on page
       Rating.findOne({imdb_id: imdb_id}, function(err, requestedMovie){
         if(!err){
           if(requestedMovie){
@@ -227,7 +225,6 @@ app.get("/found/:movieID", function(req, res) {
 
   app.post('/thumbsdown', function(req, res){
 
-
       //save id and title from detaisl page
       const imdb_id = req.body.movieIDdown;
       const title = req.body.movieTitledown;
@@ -262,9 +259,6 @@ app.get("/found/:movieID", function(req, res) {
       });
 
   });
-
-
-
 
 app.listen(3001, function() {
   console.log("Server is started on port 3001");
