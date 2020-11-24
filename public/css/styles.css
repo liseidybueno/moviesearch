@@ -1,0 +1,144 @@
+@import url('../node_modules/font-awesome/css/font-awesome.min.css');
+
+body {
+  background-color: #f2efea;
+}
+
+.container {
+  position: relative;
+  min-height: 100vh;
+}
+
+.content-wrap{
+  padding-bottom: 2.5rem;
+}
+
+h1 {
+  font-family: 'Limelight';
+  font-size: 6rem;
+  margin-bottom: 0;
+  color: #556052;
+}
+
+h2 {
+  font-family: 'Montserrat';
+  font-size: 2rem;
+  margin-top: 0;
+  color: #af6b58;
+}
+
+h3 {
+  font-family: 'Quicksand';
+  font-size: 1.75rem;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 3%;
+}
+
+.search {
+  text-align: center;
+}
+
+.search-text{
+  font-family: 'Montserrat';
+  font-size: 1.5rem;
+  color: #333333;
+}
+
+.search-input {
+  width: 30%;
+  font-size: 1.25rem;
+  font-family: 'Quicksand';
+}
+
+.search-button {
+  margin-top: 2%;
+  background-color: #cbbcb1;
+  font-size: 1.25rem;
+  font-family: 'Quicksand';
+}
+
+.search-results {
+  text-align: center;
+  font-family: 'Quicksand';
+  font-size: 1.25rem;
+}
+
+a, a:visited {
+  color: #556052;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #af6b58;
+}
+
+.details {
+  text-align: center;
+  font-family: 'Quicksand';
+  font-size: 1.25rem;
+}
+
+.movie-details{
+  width: 80%;
+  margin: auto;
+  text-align: center;
+}
+
+.category {
+  font-family: 'Montserrat';
+  font-size: 1.3rem;
+  font-weight: 400;
+}
+
+.detail {
+  font-family: 'Montserrat';
+  font-size: 1.3rem;
+  font-weight: 200;
+}
+
+.thumbs-container {
+  display: flex;
+  padding: 0 40% 0 40%;
+  margin-top: 3%;
+}
+
+.thumbs-div-float{
+  flex: 1;
+}
+
+.thumbs-div-float:first-chid{
+  margin-right: 20px;
+}
+
+.thumbs {
+  /* margin-left: 1rem;
+  margin-right: 1rem; */
+  /* margin-bottom: 0; */
+}
+
+.thumbs-button {
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  outline: inherit;
+  font-size: 1.5rem;
+}
+
+.footer {
+	position: absolute;
+	text-align: center;
+	bottom: 0;
+	width: 100%;
+	height: 3rem;
+}
+
+.footer p {
+	font-size: 1.3rem;
+  font-family: 'Quicksand';
+  color: #333333;
+}

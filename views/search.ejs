@@ -1,0 +1,16 @@
+<%- include("partials/header"); -%>
+
+    <div class="search">
+      <p class="search-text">
+        Search for a movie by title:
+        </p>
+        <form action="/found" method="post">
+
+          <input class="search-input" type="text" name="movieTitle" placeholder="Title">
+          <br />
+          <button type="submit" name="searchButton" class="search-button">Search</button>
+
+        </form>
+    </div>
+
+<%- include("partials/footer"); -%>

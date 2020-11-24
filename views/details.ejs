@@ -1,0 +1,63 @@
+<%- include("partials/header"); -%>
+
+<div class="details">
+
+  <h3><%= title %></h3>
+
+  <div class="movie-details">
+
+    <p>
+      <span class="category">Description: </span> <span class="detail"><%= description %></span>
+    </p>
+    <p>
+      <span class="category">Year: </span><span class="detail"><%= year %></span>
+    </p>
+    <p>
+      <span class="category">Directors: </span> <span class="detail"><%= directors %></span>
+    </p>
+    <p>
+      <span class="category">Rating: </span><span class="detail"><%= rating %></span>
+    </p>
+
+
+    <div class="thumbs-container">
+      <div class="thumbs-div-float">
+        <form action="/thumbsup" method="post">
+          <input type="hidden" name="movieIDup" value="<%= imdb_id %>"></input>
+          <input type="hidden" name="movieTitleup" value="<%= title %>"></input>
+          <input type="hidden" name="thumbsup" value="<%= thumbs_up %>"></input>
+
+          <button class="thumbs-button" type="submit" name="thumbs-up" id="thumbsUp" onclick="this.form.submit()"><i class="thumbs fas fa-thumbs-up fa-2x"></i></button>
+
+          <p id="thumbs-up-amount">
+            <%= thumbs_up %>
+          </p>
+
+        </form>
+      </div>
+      <div class="thumbs-div-float">
+
+        <form action="/thumbsdown" method="post">
+          <input type="hidden" name="movieIDdown" value="<%= imdb_id %>"></input>
+          <input type="hidden" name="movieTitledown" value="<%= title %>"></input>
+          <input type="hidden" name="thumbsdown" value="<%= thumbs_down %>"></input>
+
+
+          <button class="thumbs-button" type="submit" name="thumbs-down" id="thumbsDown" onclick="this.form.submit()"><i class="thumbs fas fa-thumbs-down fa-2x"></i></button>
+          <p>
+            <%= thumbs_down %>
+          </p>
+
+        </form>
+      </div>
+
+    </div>
+    <p>
+      <a href="/">Back to Search</a>
+    </p>
+
+  </div>
+
+</div>
+
+<%- include("partials/footer"); -%>
