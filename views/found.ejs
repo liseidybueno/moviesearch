@@ -2,13 +2,13 @@
 
 <div class="search-results">
 
+  <!-- for loop to show each movie with its title and year and an option to view more information about it  -->
   <% for(var i = 0; i < movieIDs.length; i++){ %>
-    <p>
-      <%= movieIDs[i].title %>, <%= movieIDs[i].year %>, <a href="/found/<%=movieIDs[i].id%>">View More</a>
-      </p>
+<p>
+    <%= movieIDs[i].title %>, <%= movieIDs[i].year %>, <a href="/found/<%=movieIDs[i].id%>">View Details</a>
+  </p>
+
   <% } %>
-
-
 
   <p>
     <a href="/">Back to Search</a>

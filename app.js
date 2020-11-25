@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const _ = require("lodash");
 const mongoose = require("mongoose");
-require('dotenv').config()
+require('dotenv').config();
 
 const app = express();
 
@@ -15,18 +15,25 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(express.static("public"));
 
-mongoose.connect("mongodb://localhost:27017/movieRatingDB", {useFindAndModify: false, useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect("mongodb://localhost:27017/movieRatingDB", {
+  useFindAndModify: false,
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
 
+var movieTitle = "";
+
+//render search page
 app.get("/", function(req, res) {
   res.render("search");
 });
 
+//found page
 app.post("/found", function(req, res) {
 
   //get movie title from search background and make lower case
-  var movieTitle = _.lowerCase(req.body.movieTitle);
+  movieTitle = _.lowerCase(req.body.movieTitle);
 
-  //add %20 in place of spaces to add into URL
   var movieTitleURL = movieTitle.split(' ').join('%20');
 
   //api to get IMDB ID's
@@ -34,7 +41,7 @@ app.post("/found", function(req, res) {
     "method": "GET",
     "hostname": process.env.API_HOSTNAME,
     "port": null,
-    "path": "/?title=" + movieTitleURL + "&type=get-movies-by-title",
+    "path": "/?s=" + movieTitleURL + "&r=json&type=movie",
     "headers": {
       "x-rapidapi-key": process.env.API_KEY,
       "x-rapidapi-host": process.env.API_HOSTNAME,
@@ -51,42 +58,47 @@ app.post("/found", function(req, res) {
     var movieData = [];
 
     response.on("data", function(data) {
-
       //push data into movie data array
       movieData.push(data);
 
     });
 
     response.on("end", function() {
-      //parse movie data
-      var movieDataStr= Buffer.concat(movieData);
 
-      //hold movie data as array of objects
+      //parse movie data
+      var movieDataStr = Buffer.concat(movieData);
+
+      // //hold movie data as array of objects
       const movieDataArr = JSON.parse(movieDataStr.toString());
 
-      //go through the array and save info into the movieID array as objects
-      for (var i = 0; i < movieDataArr.movie_results.length; i++) {
+      //if no results are found, render the no results page
+      if (movieDataArr.Search === undefined) {
+        res.render("noresults");
+      } else {
 
-        var movieInfo = {
-          "title": movieDataArr.movie_results[i].title,
-          "year": movieDataArr.movie_results[i].year,
-          "id": movieDataArr.movie_results[i].imdb_id
+        //go through the array and save info into the movieID array as objects
+        for (var i = 0; i < movieDataArr.Search.length; i++) {
+
+          var movieInfo = {
+            "title": movieDataArr.Search[i].Title,
+            "year": movieDataArr.Search[i].Year,
+            "id": movieDataArr.Search[i].imdbID
+          }
+          movieIDs.push(movieInfo);
         }
-        movieIDs.push(movieInfo);
 
+        //render found page with the found movie data
+        res.render("found", {
+          movieIDs: movieIDs
+        });
       }
-
-      //render found page with the found movie data
-      res.render("found", {
-        movieIDs: movieIDs
-      });
-
 
     });
 
   });
 
 });
+
 
 //create schema for thumbs up and down ratings
 const ratingSchema = {
@@ -96,6 +108,7 @@ const ratingSchema = {
   thumbs_down: Number
 };
 
+//Rating model
 const Rating = mongoose.model("Rating", ratingSchema);
 
 app.get("/found/:movieID", function(req, res) {
@@ -108,7 +121,7 @@ app.get("/found/:movieID", function(req, res) {
     "method": "GET",
     "hostname": process.env.API_HOSTNAME,
     "port": null,
-    "path": "/?imdb=" + movieID + "&type=get-movie-details",
+    "path": "/?i=" + movieID + "&type=movie&r=json",
     "headers": {
       "x-rapidapi-key": process.env.API_KEY,
       "x-rapidapi-host": process.env.API_HOSTNAME,
@@ -121,33 +134,38 @@ app.get("/found/:movieID", function(req, res) {
     //hold movie details
     const movieDetails = [];
 
+    //hold movie data
     const movieData = [];
 
     response.on("data", function(data) {
-
+      //save data into movie data
       movieData.push(data);
     });
 
     response.on("end", function() {
 
       //parse movie data
-      var movieDataStr= Buffer.concat(movieData);
+      var movieDataStr = Buffer.concat(movieData);
 
       //hold movie data as array of objects
       const movieDataArr = JSON.parse(movieDataStr.toString());
 
-      const title = movieDataArr.title;
-      const description = movieDataArr.description;
-      const year = movieDataArr.year;
-      const directors = movieDataArr.directors;
-      const rating = movieDataArr.imdb_rating;
-      const imdb_id = movieDataArr.imdb_id;
+      //save movie data in variables
+      const title = movieDataArr.Title;
+      const description = movieDataArr.Plot;
+      const year = movieDataArr.Year;
+      const directors = movieDataArr.Director;
+      const rating = movieDataArr.imdbRating;
+      const imdb_id = movieDataArr.imdbID;
 
       //look for the imdb id in the database
       //if it exists get the thumbs down and thumbs up amount and display on page
-      Rating.findOne({imdb_id: imdb_id}, function(err, requestedMovie){
-        if(!err){
-          if(requestedMovie){
+      //if it doesn't exist, set thumbs up and down to 0 and display
+      Rating.findOne({
+        imdb_id: imdb_id
+      }, function(err, requestedMovie) {
+        if (!err) {
+          if (requestedMovie) {
             let thumbs_up = requestedMovie.thumbs_up;
             let thumbs_down = requestedMovie.thumbs_down;
 
@@ -159,7 +177,8 @@ app.get("/found/:movieID", function(req, res) {
               rating: rating,
               imdb_id: imdb_id,
               thumbs_up: thumbs_up,
-              thumbs_down: thumbs_down
+              thumbs_down: thumbs_down,
+              movieTitle: movieTitle
             });
           } else {
             let thumbs_up = 0;
@@ -173,92 +192,106 @@ app.get("/found/:movieID", function(req, res) {
               rating: rating,
               imdb_id: imdb_id,
               thumbs_up: thumbs_up,
-              thumbs_down: thumbs_down
+              thumbs_down: thumbs_down,
+              movieTitle: movieTitle
             });
-        }
-        }
-
-      });
-
-
-    });
-
-    });
-
-
-  });
-
-  app.post('/thumbsup', function(req, res){
-
-      //save id and title from detaisl page
-      const imdb_id = req.body.movieIDup;
-      const title = req.body.movieTitleup;
-      let thumbs_up = req.body.thumbsup;
-
-      thumbs_up++;
-
-      //check to see if the movie exists in the database
-      Rating.findOneAndUpdate({imdb_id: imdb_id}, {thumbs_up: thumbs_up}, function(err, requestedMovie){
-        if(!err){
-          if(!requestedMovie){
-            //if it doesn't exist, then add it to the database
-            //create new movie model
-            const movie_rating = new Rating({
-              title: title,
-              imdb_id: imdb_id,
-              thumbs_up: thumbs_up,
-              thumbs_down: 0
-            });
-            //save movie rating
-            movie_rating.save();
-            //redirect to same page to show new thumbs up amount
-            res.redirect("/found/" + imdb_id);
-          } else {
-            //if it does exist, just redirect and show new thumbs up amount
-            res.redirect("/found/" + imdb_id);
           }
         }
 
       });
 
-  });
-
-  app.post('/thumbsdown', function(req, res){
-
-      //save id and title from detaisl page
-      const imdb_id = req.body.movieIDdown;
-      const title = req.body.movieTitledown;
-
-      let thumbs_down = req.body.thumbsdown;
-
-      //increment thumbs down
-      thumbs_down++;
-
-      //check to see if the movie exists in the database
-      Rating.findOneAndUpdate({imdb_id: imdb_id}, {thumbs_down: thumbs_down}, function(err, requestedMovie){
-        if(!err){
-          if(!requestedMovie){
-            //if it doesn't exist, then add it to the database
-            //create new movie model
-            const movie_rating = new Rating({
-              title: title,
-              imdb_id: imdb_id,
-              thumbs_up: 0,
-              thumbs_down: thumbs_down
-            });
-            //save movie rating
-            movie_rating.save();
-            //redirect to same page to show new thumbs up amount
-            res.redirect("/found/" + imdb_id);
-          } else {
-            //if it does exist, just redirect and show new thumbs up amount
-            res.redirect("/found/" + imdb_id);
-          }
-        }
-
-      });
+    });
 
   });
+
+});
+
+//increment thumbs up and save to database
+app.post('/thumbsup', function(req, res) {
+
+  //save id and title from details page
+  const imdb_id = req.body.movieIDup;
+  const title = req.body.movieTitleup;
+  let thumbs_up = req.body.thumbsup;
+
+  //increment thumbs up
+  thumbs_up++;
+
+  //check to see if the movie exists in the database
+  Rating.findOneAndUpdate({
+    //use id to search data base
+    imdb_id: imdb_id
+  }, {
+    //update thumbs up
+    thumbs_up: thumbs_up
+  }, function(err, requestedMovie) {
+    if (!err) {
+      if (!requestedMovie) {
+        //if it doesn't exist, then add it to the database
+        //create new movie model
+        const movie_rating = new Rating({
+          title: title,
+          imdb_id: imdb_id,
+          thumbs_up: thumbs_up,
+          thumbs_down: 0
+        });
+        //save movie rating
+        movie_rating.save();
+        //redirect to same page to show new thumbs up amount
+        res.redirect("/found/" + imdb_id);
+      } else {
+        //if it does exist, just redirect and show new thumbs up amount
+        res.redirect("/found/" + imdb_id);
+      }
+    }
+
+  });
+
+});
+
+app.post('/thumbsdown', function(req, res) {
+
+  //save id and title from detaisl page
+  const imdb_id = req.body.movieIDdown;
+  const title = req.body.movieTitledown;
+
+  let thumbs_down = req.body.thumbsdown;
+
+  //increment thumbs down
+  thumbs_down++;
+
+  //check to see if the movie exists in the database
+  Rating.findOneAndUpdate({
+    //use id to search database
+    imdb_id: imdb_id
+  }, {
+    //update thumbs down
+    thumbs_down: thumbs_down
+  }, function(err, requestedMovie) {
+    if (!err) {
+      if (!requestedMovie) {
+        //if it doesn't exist, then add it to the database
+        //create new movie model
+        const movie_rating = new Rating({
+          title: title,
+          imdb_id: imdb_id,
+          thumbs_up: 0,
+          thumbs_down: thumbs_down
+        });
+        //save movie rating
+        movie_rating.save();
+        //redirect to same page to show new thumbs down amount
+        res.redirect("/found/" + imdb_id);
+      } else {
+        //if it does exist,  redirect and show new thumbs down amount
+        res.redirect("/found/" + imdb_id);
+      }
+    }
+
+  });
+
+});
+
 
 app.listen(3001, function() {
   console.log("Server is started on port 3001");

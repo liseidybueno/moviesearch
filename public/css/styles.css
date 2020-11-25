@@ -123,7 +123,20 @@ a:hover {
   font-size: 1.5rem;
 }
 
-#thumbsUp:hover, #thumbsDown:hover {
+.back-to-search {
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  outline: inherit;
+  font-size: 1.25rem;
+  color: #556052;
+  text-decoration: none;
+  font-family: 'Quicksand';
+}
+
+#thumbsUp:hover, #thumbsDown:hover, .back-to-search:hover {
   color: #af6b58;
 }
 

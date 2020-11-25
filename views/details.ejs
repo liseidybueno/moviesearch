@@ -16,20 +16,23 @@
       <span class="category">Directors: </span> <span class="detail"><%= directors %></span>
     </p>
     <p>
-      <span class="category">Rating: </span><span class="detail"><%= rating %></span>
+      <span class="category">IMDB Rating: </span><span class="detail"><%= rating %></span>
     </p>
 
 
     <div class="thumbs-container">
       <div class="thumbs-div-float">
+
         <form action="/thumbsup" method="post">
+          <!-- use inputs to send thumbs up data back to server -->
           <input type="hidden" name="movieIDup" value="<%= imdb_id %>"></input>
           <input type="hidden" name="movieTitleup" value="<%= title %>"></input>
           <input type="hidden" name="thumbsup" value="<%= thumbs_up %>"></input>
 
           <button class="thumbs-button" type="submit" name="thumbs-up" id="thumbsUp" onclick="this.form.submit()"><i class="thumbs fas fa-thumbs-up fa-2x" id="thumbs-up-img"></i></button>
 
-          <p id="thumbs-up-amount">
+          <!-- show thumbs up amount  -->
+          <p>
             <%= thumbs_up %>
           </p>
 
@@ -37,6 +40,7 @@
       </div>
       <div class="thumbs-div-float">
 
+        <!-- use inputs to send thumbs down data back to server -->
         <form action="/thumbsdown" method="post">
           <input type="hidden" name="movieIDdown" value="<%= imdb_id %>"></input>
           <input type="hidden" name="movieTitledown" value="<%= title %>"></input>
@@ -44,6 +48,7 @@
 
 
           <button class="thumbs-button" type="submit" name="thumbs-down" id="thumbsDown" onclick="this.form.submit()"><i class="thumbs fas fa-thumbs-down fa-2x" id="thumbs-down-img"></i></button>
+          <!-- show thumbs down amount  -->
           <p>
             <%= thumbs_down %>
           </p>
@@ -55,7 +60,12 @@
       <p>
           <a href="/">Back to Search</a>
         </p>
+      <form action="/found" method="post">
+        <!-- send movie title back to server  -->
+        <input type="hidden" name="movieTitle" value="<%=movieTitle%>">
+        <button class="back-to-search" type="submit">Back to Results</button>
 
+      </form>
 
   </div>
 
@@ -63,20 +73,23 @@
 
 <script>
 
-
+  //get the thumbs up and thumbs down amount
   var thumbsUpAmt = <%= thumbs_up %>;
   var thumbsDownAmt = <%= thumbs_down %>;
 
+  //get the image elements for thumbs up and thumbs down
   var thumbsUp = document.getElementById("thumbs-up-img");
   var thumbsDown = document.getElementById("thumbs-down-img");
 
+  //if thumbs up amount is greater than thumbs down amount, change the thumbs up
+  //to green
+  //else if thumbs down is greater than thumbs up amount, change the thumbs down
+  //to red
   if(thumbsUpAmt > thumbsDownAmt){
     thumbsUp.style.color = "green";
   } else if (thumbsUpAmt < thumbsDownAmt){
     thumbsDown.style.color = "red";
   }
-
-
 
 
 </script>
