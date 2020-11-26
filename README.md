@@ -26,12 +26,12 @@ down image will be red; if they are equal, both will remain black. From the deta
 <!-- GETTING STARTED -->
 ## Getting Started
 
-This project was built using Node.js, Express, and Mongoose. It requires the following dependecies: npm, express, https, body-parser, ejs, lodash, mongoose, and dotenv.
+This project was built using Node.js, Express, and Mongoose. To use, make sure to have MongoDB installed and run install npm on the Terminal. 
 <p>
 Use on localhost on the browser of your choice.
   </p>
   <p><b>API KEY</b></p>
-  <p>You will need your own API key from the Movie Database API from rapidapi.com. You can either create a .env file and add the api key in the format: API_KEY:KEY-HERE or you can replace process.env.API_KEY with the key. 
+  <p>You will need your own API key from the Movie Database API from rapidapi.com. You can either create a .env file and add the api key in the format: API_KEY:KEY-HERE or you can replace process.env.API_KEY with the key with quotation marks around the key. 
 
 <!-- SCREENSHOTS -->
 ## Images
