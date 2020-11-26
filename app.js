@@ -42,12 +42,12 @@ app.post("/found", function(req, res) {
   //api to get IMDB ID's
   const options = {
     "method": "GET",
-    "hostname": process.env.API_HOSTNAME,
+    "hostname": "movie-database-imdb-alternative.p.rapidapi.com",
     "port": null,
     "path": "/?s=" + movieTitleURL + "&r=json&type=movie",
     "headers": {
       "x-rapidapi-key": process.env.API_KEY,
-      "x-rapidapi-host": process.env.API_HOSTNAME,
+      "x-rapidapi-host": "movie-database-imdb-alternative.p.rapidapi.com",
       "useQueryString": true
     }
   };
@@ -123,12 +123,12 @@ app.get("/found/:movieID", function(req, res) {
   //search through API using movie ID
   const options = {
     "method": "GET",
-    "hostname": process.env.API_HOSTNAME,
+    "hostname": "movie-database-imdb-alternative.p.rapidapi.com",
     "port": null,
     "path": "/?i=" + movieID + "&type=movie&r=json",
     "headers": {
       "x-rapidapi-key": process.env.API_KEY,
-      "x-rapidapi-host": process.env.API_HOSTNAME,
+      "x-rapidapi-host": "movie-database-imdb-alternative.p.rapidapi.com",
       "useQueryString": true
     }
   };
