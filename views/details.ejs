@@ -2,10 +2,16 @@
 
 <div class="details">
 
-  <h3><%= title %></h3>
+  <h3 class="movie-title-details"><%= title %></h3>
 
   <div class="movie-details">
 
+    <!-- <div class="poster"> -->
+      <img class="poster" src="<%=poster_url%>">
+<!--
+    </div> -->
+
+    <div class="movie-info">
     <p>
       <span class="category">Description: </span> <span class="detail"><%= description %></span>
     </p>
@@ -57,17 +63,20 @@
       </div>
 
     </div>
+
+    <form action="/found" method="post">
+      <!-- send movie title back to server  -->
+      <input type="hidden" name="movieTitle" value="<%=movieTitle%>">
+      <button class="back-to-search" type="submit">Back to Results</button>
+
+    </form>
+
+  </div>
+      </div>
       <p>
           <a href="/">Back to Search</a>
         </p>
-      <form action="/found" method="post">
-        <!-- send movie title back to server  -->
-        <input type="hidden" name="movieTitle" value="<%=movieTitle%>">
-        <button class="back-to-search" type="submit">Back to Results</button>
 
-      </form>
-
-  </div>
 
 </div>
 

@@ -31,6 +31,9 @@ app.get("/", function(req, res) {
 //found page
 app.post("/found", function(req, res) {
 
+  //movie title to display
+  var displayMovieTitle = req.body.movieTitle;
+
   //get movie title from search background and make lower case
   movieTitle = _.lowerCase(req.body.movieTitle);
 
@@ -89,7 +92,8 @@ app.post("/found", function(req, res) {
 
         //render found page with the found movie data
         res.render("found", {
-          movieIDs: movieIDs
+          movieIDs: movieIDs,
+          displayMovieTitle: displayMovieTitle
         });
       }
 
@@ -157,6 +161,7 @@ app.get("/found/:movieID", function(req, res) {
       const directors = movieDataArr.Director;
       const rating = movieDataArr.imdbRating;
       const imdb_id = movieDataArr.imdbID;
+      const poster_url = movieDataArr.Poster;
 
       //look for the imdb id in the database
       //if it exists get the thumbs down and thumbs up amount and display on page
@@ -176,6 +181,7 @@ app.get("/found/:movieID", function(req, res) {
               directors: directors,
               rating: rating,
               imdb_id: imdb_id,
+              poster_url: poster_url,
               thumbs_up: thumbs_up,
               thumbs_down: thumbs_down,
               movieTitle: movieTitle
@@ -191,6 +197,7 @@ app.get("/found/:movieID", function(req, res) {
               directors: directors,
               rating: rating,
               imdb_id: imdb_id,
+              poster_url: poster_url,
               thumbs_up: thumbs_up,
               thumbs_down: thumbs_down,
               movieTitle: movieTitle
