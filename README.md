@@ -39,15 +39,15 @@ Use on localhost on the browser of your choice.
 Some images of the app in use:
 
 <p align="center">
-<img style="width: 60%" src="/movie-search-images/Search.png">
+<img src="/movie-search-images/Search.png" width="60%">
 <br>
-<img style="width: 60%" src="/movie-search-images/List.png">
+<img src="/movie-search-images/List.png" width="60%">
 <br>
-<img style="width: 60%" src="/movie-search-images/Details2.png">
+<img src="/movie-search-images/Details1.png" width="60%">
 <br>
-<img style="width: 60%" src="/movie-search-images/Details2.png">
+<img src="/movie-search-images/Details2.png" width="60%">
 <br>
-<img style="width: 60%" src="/movie-search-images/Details2.png">
+<img src="/movie-search-images/Details3.png" width="60%">
 <br>
 
 </p>
