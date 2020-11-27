@@ -42,12 +42,12 @@ app.post("/found", function(req, res) {
   //api to get IMDB ID's
   const options = {
     "method": "GET",
-    "hostname": "movie-database-imdb-alternative.p.rapidapi.com",
+    "hostname": process.env.API_URL,
     "port": null,
     "path": "/?s=" + movieTitleURL + "&r=json&type=movie",
     "headers": {
       "x-rapidapi-key": process.env.API_KEY,
-      "x-rapidapi-host": "movie-database-imdb-alternative.p.rapidapi.com",
+      "x-rapidapi-host": process.env.API_URL,
       "useQueryString": true
     }
   };
