@@ -1,6 +1,8 @@
 <p align="center">
 
-  <h3 align="center">THE MOVIE DATABASE</h3>
+  <h2 align="center">THE MOVIE DATABASE</h2>
+
+  <h3 align="center"><a href="https://obscure-citadel-66128.herokuapp.com/">Live Web App</a></h3>
 
   <p align="center">
     A web app where users can look up movies based on their title, get a list of movies matching their query, and view more details about the movie. Users can also
